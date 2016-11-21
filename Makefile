@@ -44,6 +44,7 @@ install: all
 	# $(APXS) -i -a -n "$(MODULE)" mod_$(MODULE).so
 	$(APXS) -i -n '$(MODULE)' mod_$(MODULE).so
 	touch /var/www/html/$(MODULE)
+	service httpd restart
 
 # display the apxs variables
 check_apxs_vars:
