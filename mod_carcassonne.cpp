@@ -16,18 +16,22 @@ extern "C" module AP_MODULE_DECLARE_DATA carcassonne_module;
 
 typedef struct {
   std::string message;
+} carcassonne_dir_config;
+
+typedef struct {
+  std::string message;
 } carcassonne_config;
 
-static void *create_server_config(apr_pool_t *p, server_rec *s)
+static void *create_dir_config(apr_pool_t *p, char *path)
 {
-  carcassonne_config *cfg;
-  try {
-    cfg = new carcassonne_config;
-  } catch(...) {
-    exit(1);
-  }
-  cfg->message = "{\"text\":\"carcassonne!\"}";
-  return (void *) cfg;
+    carcassonne_dir_config *cfg;
+    try {
+      cfg = new carcassonne_dir_config;
+    } catch(...) {
+      exit(1);
+    }
+    cfg->message = "{\"text\":\"hello\"}";
+    return (void *) cfg;
 }
 
 static int carcassonne_handler(request_rec *r)
@@ -37,7 +41,7 @@ static int carcassonne_handler(request_rec *r)
      * and the server will try somewhere else.
      */
     if (!r->handler || strcmp(r->handler, "carcassonne")) return (DECLINED);
-    carcassonne_config *cfg = (carcassonne_config *)ap_get_module_config(r->server->module_config, &carcassonne_module);
+    carcassonne_dir_config *cfg = (carcassonne_dir_config *)ap_get_module_config(r->per_dir_config, &carcassonne_module);
 
     /* Now that we are handling this request, we'll write out "Hello, world!" to the client.
      * To do so, we must first set the appropriate content type, followed by our output.
@@ -59,9 +63,9 @@ static void register_hooks(apr_pool_t *p)
 extern "C" {
     module AP_MODULE_DECLARE_DATA carcassonne_module = {
 		STANDARD20_MODULE_STUFF,
-                NULL,
+                create_dir_config,
 		NULL,
-                create_server_config,
+                NULL,
 		NULL,
 		NULL,
 		register_hooks
