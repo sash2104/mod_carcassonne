@@ -30,7 +30,7 @@ static void *create_dir_config(apr_pool_t *p, char *path)
     } catch(...) {
       exit(1);
     }
-    cfg->message = "{\"text\":\"hello\"}";
+    cfg->message = "{\"tile\":[1,0,0,0,0],\"next_tile\":2}";
     return (void *) cfg;
 }
 
