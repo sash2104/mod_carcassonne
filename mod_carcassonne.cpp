@@ -46,7 +46,10 @@ static int carcassonne_handler(request_rec *r)
     carcassonne_dir_config *cfg = (carcassonne_dir_config *)ap_get_module_config(r->per_dir_config, &carcassonne_module);
 
     std::ostringstream ss;
-    ss << "{\"tile\":[" << rand()%4 << "," << rand()%4 << "," << rand()%4 << ",0,0],\"next_tile\":" << rand()%4 << "}";
+    ss << "{\"tile\":[" << rand()%4 << "," << rand()%4 << "," << rand()%4 << ",0,0]";
+    ss << ",\"next_tile\":" << rand()%4;
+    ss << ",\"candidates\":" << "[[0,0],[1,1]]";
+    ss << "}";
 
     /* Now that we are handling this request, we'll write out "Hello, world!" to the client.
      * To do so, we must first set the appropriate content type, followed by our output.
